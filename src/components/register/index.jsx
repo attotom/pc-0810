@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import PropTypes from 'prop-types';
 import {NavBar, WingBlank, WhiteSpace, List, InputItem, Radio, Button } from 'antd-mobile';
 
 import Logo from '../logo';
@@ -6,6 +7,11 @@ import Logo from '../logo';
 const Item = List.Item;
 
 class Register extends Component {
+  static propTypes = {
+    user: PropTypes.object.isRequired,
+    register: PropTypes.func.isRequired
+  }
+  
   state = {
     // isBossChecked: true,
     laoban: true,
@@ -48,11 +54,13 @@ class Register extends Component {
     })
   }
   
-  register = () => {
+  register = async () => {
     //收集表单数据
     const {laoban, password, rePassword, username} = this.state;
     //发送ajax
     console.log(laoban, password, rePassword, username);
+    //调用容器组件传递的更新状态的方法
+    this.props.register({type: laoban ? 'laoban' : 'dashen', password, rePassword, username});
   }
   
   goLogin = () => {
@@ -73,9 +81,9 @@ class Register extends Component {
           <List>
             <InputItem onChange={val => this.handleChange('username', val)}>用户名:</InputItem>
             <WhiteSpace />
-            <InputItem onChange={val => this.handleChange('password', val)}>密&nbsp;&nbsp;&nbsp;码:</InputItem>
+            <InputItem onChange={val => this.handleChange('password', val)} type="password">密&nbsp;&nbsp;&nbsp;码:</InputItem>
             <WhiteSpace />
-            <InputItem onChange={val => this.handleChange('rePassword', val)}>确认密码:</InputItem>
+            <InputItem onChange={val => this.handleChange('rePassword', val)} type="password">确认密码:</InputItem>
             <WhiteSpace />
             <Item>
               用户类型:  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
