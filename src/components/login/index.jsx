@@ -1,49 +1,56 @@
 import React, {Component} from 'react';
-import {NavBar, WingBlank, WhiteSpace, List, InputItem, Radio, Button } from 'antd-mobile';
+import PropTypes from 'prop-types';
+import {NavBar, WingBlank, WhiteSpace, List, InputItem, Button } from 'antd-mobile';
+import {Redirect} from 'react-router-dom';
 
 import Logo from '../logo';
 
-const Item = List.Item;
-
-class Register extends Component {
-  state = {
-    // isBossChecked: true,
-    laoban: true,
-    username: '',
-    password: '',
-    rePassword: ''
+class Login extends Component {
+  static propTypes = {
+    user: PropTypes.object.isRequired,
+    login: PropTypes.func.isRequired
   }
-
+  
+  state = {
+    username: '',
+    password: ''
+  }
+  
   handleChange = (type, value) => {
     //更新状态
     this.setState({
       [type]: value
     })
   }
-
-  register = () => {
+  
+  login = async () => {
     //收集表单数据
-    const {laoban, password, rePassword, username} = this.state;
-    //发送ajax
-    console.log(laoban, password, rePassword, username);
+    const {password, username} = this.state;
+    //调用容器组件传递的更新状态的方法
+    this.props.login({password, username});
   }
-
+  
   goRegister = () => {
-    //去注册页面, 将地址切换为register
     this.props.history.replace('/register');
   }
-
+  
   render () {
+    const {errMsg, redirectTo} = this.props.user;
+  
+    if (redirectTo) {
+      return <Redirect to={redirectTo} />
+    }
+    
     return (
       <div>
         <NavBar>硅谷直聘</NavBar>
         <Logo />
+        <p className="err-msg">{errMsg}</p>
         <WingBlank>
           <List>
             <InputItem onChange={val => this.handleChange('username', val)}>用户名:</InputItem>
             <WhiteSpace />
-            <InputItem onChange={val => this.handleChange('password', val)}>密&nbsp;&nbsp;&nbsp;码:</InputItem>
-            <WhiteSpace />
+            <InputItem onChange={val => this.handleChange('password', val)} type="password">密&nbsp;&nbsp;&nbsp;码:</InputItem>
             <WhiteSpace />
             <Button type="primary" onClick={this.login}>登录</Button>
             <WhiteSpace />
@@ -56,4 +63,4 @@ class Register extends Component {
   }
 }
 
-export default Register;
+export default Login;
