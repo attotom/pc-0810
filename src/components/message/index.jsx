@@ -13,14 +13,14 @@ class Message extends Component {
           multipleLine
           arrow="horizontal"
         >
-          今天天气真晴朗 <Brief>laoban001</Brief>
+          今天天气真晴朗 <Brief>蟹阿金</Brief>
         </Item>
         <Item
           thumb={require('../../assets/images/头像1.png')}
           multipleLine
           arrow="horizontal"
         >
-          今天天气真晴朗 <Brief>laoban001</Brief>
+          今天天气真晴朗 <Brief>蟹阿金</Brief>
         </Item>
       </List>
     )
