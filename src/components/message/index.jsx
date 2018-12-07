@@ -30,6 +30,18 @@ class Message extends Component {
       users_id[othersId] = users[othersId];
       //为了方便后面取id值，在给这个对象添加一个id
       users_id[othersId].id = othersId;
+      
+      const time = Date.parse(item.createTime);
+      if (users_id[othersId].time) {
+        //说明之前添加过数据，将现在的数据和之前的数据进行比较
+        if (users_id[othersId].time < time) {
+          users_id[othersId].time = time;
+          users_id[othersId].message = item.message;
+        }
+      } else {
+        users_id[othersId].time = time;
+        users_id[othersId].message = item.message;
+      }
     })
     //将对象变成数组
     const chatList = Object.values(users_id);  // [{header, username, id}]
@@ -45,7 +57,7 @@ class Message extends Component {
               arrow="horizontal"
               onClick={this.goChat.bind(null, item.id)}
             >
-              今天又没有地方去呢 <Brief>{item.username}</Brief>
+              {item.message} <Brief>{item.username}</Brief>
             </Item>
           ))
         }
